@@ -30,49 +30,6 @@ public class DropToken {
         this.columnsPlayed = new ArrayList<Integer>();
     }
 
-    public static void main(String[] args) {
-        Scanner scanIn = new Scanner(System.in);
-        DropToken dropTokenGame = new DropToken();
-        boolean gameOver = false;
-        printWelcomeMessage();
-
-        while (!gameOver) {
-            String playerMove = scanIn.nextLine().toUpperCase();
-
-            if (playerMove.contains("PUT ")) {
-                boolean isSuccess = dropTokenGame.putTokenOnBoard(playerMove);
-                if (isSuccess) {
-                    if (dropTokenGame.checkForWin()) {
-                        System.out.println("WIN");
-                    } else if(dropTokenGame.checkForDraw()){
-                        System.out.println("DRAW");
-                    } else {
-                        System.out.println("OK");
-                    }
-                    dropTokenGame.changePlayerTurn();
-                } else {
-                    System.out.println("ERROR");
-                }
-            } else {
-                switch (playerMove) {
-                    case "GET":
-                        dropTokenGame.printColumnsPlayed();
-                        break;
-                    case "BOARD":
-                        dropTokenGame.printCurrentBoard();
-                        break;
-                    case "EXIT":
-                        gameOver = true;
-                        break;
-                    default:
-                        printHelpMessage();
-                        break;
-                }
-            }
-        }
-        scanIn.close();
-    }
-
     /*
      A draw occurs when there are no more moves and there has not been a win
      The win is checked for by the switch statement in the main method, so
@@ -189,6 +146,9 @@ public class DropToken {
         return false;
     }
 
+    /*
+    Prints the current board to the console.
+     */
     private void printCurrentBoard() {
         for (int i = 0; i < BOARD_DIMENSION; i++) {
             System.out.print("\n|");
@@ -201,6 +161,9 @@ public class DropToken {
         System.out.println("  1 2 3 4");
     }
 
+    /*
+    Prints a list of the columns played to the console.
+     */
     private void printColumnsPlayed() {
         columnsPlayed.forEach((value) -> System.out.println(value));
     }
@@ -217,5 +180,48 @@ public class DropToken {
         System.out.println("\n It appears your instruction is not valid. \n" +
                 " Please try again using only the following commands:" +
                 " PUT <Column #1-4>, GET, BOARD, EXIT \n");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanIn = new Scanner(System.in);
+        DropToken dropTokenGame = new DropToken();
+        boolean gameOver = false;
+        printWelcomeMessage();
+
+        while (!gameOver) {
+            String playerMove = scanIn.nextLine().toUpperCase();
+
+            if (playerMove.contains("PUT ")) {
+                boolean isSuccess = dropTokenGame.putTokenOnBoard(playerMove);
+                if (isSuccess) {
+                    if (dropTokenGame.checkForWin()) {
+                        System.out.println("WIN");
+                    } else if(dropTokenGame.checkForDraw()){
+                        System.out.println("DRAW");
+                    } else {
+                        System.out.println("OK");
+                    }
+                    dropTokenGame.changePlayerTurn();
+                } else {
+                    System.out.println("ERROR");
+                }
+            } else {
+                switch (playerMove) {
+                    case "GET":
+                        dropTokenGame.printColumnsPlayed();
+                        break;
+                    case "BOARD":
+                        dropTokenGame.printCurrentBoard();
+                        break;
+                    case "EXIT":
+                        gameOver = true;
+                        break;
+                    default:
+                        printHelpMessage();
+                        break;
+                }
+            }
+        }
+        scanIn.close();
     }
 }
